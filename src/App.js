@@ -1,4 +1,4 @@
-import React from 'react' 
+import React from 'react'
 import './App.css'
 import ListBooks from './common/components/ListBooks'
 import * as BooksAPI from './util/BooksAPI'
@@ -8,6 +8,8 @@ class BooksApp extends React.Component {
     books: []
   }
 
+
+
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
@@ -15,8 +17,18 @@ class BooksApp extends React.Component {
 
   }
 
+
+
   render() {
+    const myShelfs = {currentlyReading: "Currently Reading",wantToRead:"Want To Read", read:"Read"}
+
+   // console.log(Object.keys(myShelfs).map(function(key){return myShelfs[]}))
+//console.log(myShelfs.currentlyReading)
     return (
+
+     
+
+
       <div className="app">
 
         <div className="search-books">
@@ -40,9 +52,22 @@ class BooksApp extends React.Component {
           </div>
         </div>
 
-        <ListBooks books={this.state.books} />
+        <div className="list-books">
+          <div className="list-books-title">
+            <h1>MyReads</h1>
+          </div>
 
-      </div>
+          <ListBooks books={this.state.books} shelf="currentlyReading" 
+                      title="Currently Reading" allShelfs = {myShelfs} />
+
+          <ListBooks books={this.state.books} shelf="wantToRead" 
+                     title="Want To Read"  allShelfs = {myShelfs} />
+
+          <ListBooks books={this.state.books} shelf="read" 
+                     title="Read" allShelfs = {myShelfs}  />
+
+        </div>
+      </div >
     )
   }
 }
