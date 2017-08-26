@@ -5,10 +5,12 @@
     "react-dom": "^15.5.4"
   },
   "devDependencies": {
+    "react-router-dom": "^4.2.2",
     "react-scripts": "0.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
+    "stop": "pkill --signal SIGINT myApp",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

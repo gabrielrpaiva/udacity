@@ -1,5 +1,7 @@
 import React from 'react'
+import { Route, Link } from 'react-router-dom'
 import './App.css'
+import SearchBooks from './SearchBooks'
 import ListBooks from './common/components/ListBooks'
 import * as BooksAPI from './util/BooksAPI'
 
@@ -13,61 +15,81 @@ class BooksApp extends React.Component {
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
+
     })
 
   }
 
+  updateShelf = (book, bookShelf) => {
+    console.log(book.id + "prateleiras:" + bookShelf)
 
+    BooksAPI.update(book, bookShelf).then((books) => {
+      BooksAPI.getAll().then((books) => {
+        this.setState({ books })
+      })
+    })
+
+  }
 
   render() {
-    const myShelfs = {currentlyReading: "Currently Reading",wantToRead:"Want To Read", read:"Read"}
 
-   // console.log(Object.keys(myShelfs).map(function(key){return myShelfs[]}))
-//console.log(myShelfs.currentlyReading)
-    return (
-
-     
+    const allShelfs = { currentlyReading: "Currently Reading", wantToRead: "Want To Read", read: "Read" }
 
 
-      <div className="app">
 
-        <div className="search-books">
-          <div className="search-books-bar">
-            <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-            <div className="search-books-input-wrapper">
-              {/* 
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-                  
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-              <input type="text" placeholder="Search by title or author" />
+    let shelfOptions = {};
 
+    let myState = this.state.books;
+
+    let mySetUpdate = this.updateShelf;
+
+    shelfOptions = Object.keys(allShelfs).map(function (key) {
+      return <div key={key} className="list-books-content">
+        <div>
+          <div className="bookshelf">
+            <h2 className="bookshelf-title">{allShelfs[key]}</h2>
+            <div className="bookshelf-books">
+              <ListBooks books={myState} shelf={key}
+                title={allShelfs[key]} setUpdate={mySetUpdate} />
             </div>
           </div>
-          <div className="search-books-results">
-            <ol className="books-grid"></ol>
-          </div>
         </div>
+      </div>
+    });
 
-        <div className="list-books">
-          <div className="list-books-title">
-            <h1>MyReads</h1>
-          </div>
 
-          <ListBooks books={this.state.books} shelf="currentlyReading" 
-                      title="Currently Reading" allShelfs = {myShelfs} />
 
-          <ListBooks books={this.state.books} shelf="wantToRead" 
-                     title="Want To Read"  allShelfs = {myShelfs} />
 
-          <ListBooks books={this.state.books} shelf="read" 
-                     title="Read" allShelfs = {myShelfs}  />
+    return (
 
-        </div>
-      </div >
+      <div>
+        <Route exact path='/' render={() => (
+          <div className="app">
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              {shelfOptions}
+              <Link
+                to='/search'
+                className='open-search'>
+                <a>Add a book</a>
+              </Link>
+            </div>
+          </div >
+        )} />
+
+
+        <Route exact path='/search' render={({ history }) => (
+          <SearchBooks />
+        )} />
+
+      </div>
+
+
+
+
+
     )
   }
 }
