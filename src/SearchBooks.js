@@ -17,13 +17,13 @@ class SearchBooks extends React.Component {
 
     searckBook = (query) => {
         this.setState({ query })
-     
+
 
         BooksAPI.search(query, 20).then(books => {
             this.setState(state => ({
                 books
             }))
-          })
+        })
 
     }
 
@@ -32,15 +32,13 @@ class SearchBooks extends React.Component {
         const { books, query } = this.state
 
         const { setUpdate, objShelfs } = this.props
-      
+        console.log(books)
+        if (typeof (books) !== "undefined" && books.length > 0) {
+            books.sort(sortBy('title'))
 
-        books.sort(sortBy('title'))
+        }
 
-        let shelfOptions = Object.keys(books).map(function (key) {
-           
-            return <ListBooks key={key} books={books} shelf="" setUpdate={setUpdate} allShelfs={objShelfs} />
 
-        });
 
 
         return (
@@ -67,7 +65,7 @@ class SearchBooks extends React.Component {
                         </div>
                     </div>
                     <div className="search-books-results">
-                       {shelfOptions}
+                        <ListBooks books={books} shelf="" setUpdate={setUpdate} allShelfs={objShelfs} />
                     </div>
                 </div>
 

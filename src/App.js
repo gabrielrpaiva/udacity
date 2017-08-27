@@ -35,9 +35,9 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, bookShelf).then((books) => {
       BooksAPI.getAll().then((books) => {
         this.setState({ books })
-       
-        window.localStorage.setItem('booksInShelfs', JSON.stringify(books) );
-       
+
+        window.localStorage.setItem('booksInShelfs', JSON.stringify(books));
+
       })
     })
 
