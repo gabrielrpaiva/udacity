@@ -22,11 +22,18 @@ class ListBooks extends Component {
         if (shelf === "") {
             booksInShelfs = window.localStorage.getItem('booksInShelfs') || '{}';
 
+            booksInShelfs = JSON.parse(booksInShelfs)
+
             showingBooks = books
 
         } else {
+            if (typeof (books) !== "undefined") {
+                // console.log(books);
+                showingBooks = books.filter((book) => book.shelf === shelf)
 
-            showingBooks = books.filter((book) => book.shelf === shelf)
+            }
+            booksInShelfs = books
+
 
         }
 
@@ -46,14 +53,16 @@ class ListBooks extends Component {
 
         });
         let shelfBooks
-         
+
         if (typeof (showingBooks) !== "undefined" && showingBooks.length > 0) {
 
             shelfBooks = showingBooks.map(function (book) {
 
-                if (booksInShelfs.length > 0) {
+                currentShelf = shelf
 
-                    let bookShelf = JSON.parse(booksInShelfs).filter(sb => sb.id === book.id)
+                if (shelf === "") {
+
+                    let bookShelf = booksInShelfs.filter(sb => sb.id === book.id)
 
                     if (bookShelf.length > 0) {
 
@@ -61,6 +70,7 @@ class ListBooks extends Component {
 
                     }
                 }
+ 
 
 
                 return <li key={book.id}>
@@ -68,7 +78,7 @@ class ListBooks extends Component {
                         <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")' }}></div>
                             <div className="book-shelf-changer">
-                                <select value={currentShelf} onChange={(event) => setUpdate(book, event.target.value)}>
+                                <select value={currentShelf} onChange={(event) => setUpdate(booksInShelfs, book, event.target.value)}>
                                     {shelfOptions}
                                 </select>
                             </div>

@@ -25,20 +25,48 @@ class BooksApp extends React.Component {
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
+
       this.setState({ books })
     })
 
   }
 
-  updateShelf = (book, bookShelf) => {
+  updateShelf = (allbooks, book, bookShelf) => {
 
-    BooksAPI.update(book, bookShelf).then((books) => {
-      BooksAPI.getAll().then((books) => {
-        this.setState({ books })
+    BooksAPI.update(book, bookShelf).then(() => {
 
-        window.localStorage.setItem('booksInShelfs', JSON.stringify(books));
+      let newBookList = {}
 
-      })
+      if (allbooks.filter(b => b.id === book.id).length === 0) {
+        console.log("else");
+
+        let searchedBooks = window.localStorage.getItem('searchedBooks') || '{}';
+        allbooks = Object.assign({}, JSON.parse(searchedBooks), allbooks);
+        
+      }
+
+
+
+      newBookList = allbooks.map(obj => {
+        // clone the current object
+        const newObj = Object.assign({}, obj);
+
+        if (newObj.id === book.id) {
+          newObj.shelf = bookShelf;
+        }
+
+        return newObj;
+
+      });
+
+
+
+
+
+      // console.log(newBookList);
+      this.setState({ books: newBookList })
+
+      window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
     })
 
   }

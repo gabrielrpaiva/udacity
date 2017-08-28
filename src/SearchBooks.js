@@ -32,9 +32,11 @@ class SearchBooks extends React.Component {
         const { books, query } = this.state
 
         const { setUpdate, objShelfs } = this.props
-        console.log(books)
+       
         if (typeof (books) !== "undefined" && books.length > 0) {
             books.sort(sortBy('title'))
+
+            window.localStorage.setItem('searchedBooks', JSON.stringify(books));
 
         }
 
