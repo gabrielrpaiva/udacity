@@ -27,6 +27,9 @@ class BooksApp extends React.Component {
     BooksAPI.getAll().then((books) => {
 
       this.setState({ books })
+
+      window.localStorage.setItem('booksInShelfs', JSON.stringify(books));
+
     })
 
   }
@@ -38,35 +41,36 @@ class BooksApp extends React.Component {
       let newBookList = {}
 
       if (allbooks.filter(b => b.id === book.id).length === 0) {
-        console.log("else");
 
         let searchedBooks = window.localStorage.getItem('searchedBooks') || '{}';
-        allbooks = Object.assign({}, JSON.parse(searchedBooks), allbooks);
-        
+
+        searchedBooks = JSON.parse(searchedBooks)
+
+        let currentBook = searchedBooks.filter(b => b.id == book.id)
+
+        allbooks = allbooks.concat(currentBook)
+
       }
-
-
 
       newBookList = allbooks.map(obj => {
         // clone the current object
         const newObj = Object.assign({}, obj);
 
         if (newObj.id === book.id) {
+          
           newObj.shelf = bookShelf;
+
         }
 
         return newObj;
 
       });
-
-
-
-
-
+ 
       // console.log(newBookList);
       this.setState({ books: newBookList })
 
       window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
+
     })
 
   }

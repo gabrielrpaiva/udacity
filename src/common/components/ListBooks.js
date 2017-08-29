@@ -13,6 +13,7 @@ class ListBooks extends Component {
 
     render() {
         const { books, shelf, setUpdate, allShelfs } = this.props
+
         let showingBooks = {}
 
         let currentShelf = shelf;
@@ -20,6 +21,7 @@ class ListBooks extends Component {
         let booksInShelfs = {}
 
         if (shelf === "") {
+
             booksInShelfs = window.localStorage.getItem('booksInShelfs') || '{}';
 
             booksInShelfs = JSON.parse(booksInShelfs)
@@ -27,17 +29,16 @@ class ListBooks extends Component {
             showingBooks = books
 
         } else {
+
             if (typeof (books) !== "undefined") {
                 // console.log(books);
                 showingBooks = books.filter((book) => book.shelf === shelf)
 
             }
+
             booksInShelfs = books
 
-
         }
-
-
 
         //console.log("na shelfOptions:" + shelfOptions) 
         let shelfOptions = Object.keys(allShelfs).map(function (key) {
@@ -52,6 +53,7 @@ class ListBooks extends Component {
             }
 
         });
+
         let shelfBooks
 
         if (typeof (showingBooks) !== "undefined" && showingBooks.length > 0) {
@@ -70,8 +72,6 @@ class ListBooks extends Component {
 
                     }
                 }
- 
-
 
                 return <li key={book.id}>
                     <div className="book">
@@ -89,21 +89,12 @@ class ListBooks extends Component {
                     </div>
                 </li>
 
-
             });
-
-
-
         }
-
-
-
 
         return (
             <ol className="books-grid">
                 {shelfBooks}
-
-
             </ol>
         )
     }
