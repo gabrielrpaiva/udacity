@@ -28,7 +28,7 @@ class SearchBooks extends React.Component {
     }
 
     render() {
-
+    
         const { books, query } = this.state
 
         const { setUpdate, objShelfs } = this.props
@@ -67,7 +67,7 @@ class SearchBooks extends React.Component {
                         </div>
                     </div>
                     <div className="search-books-results">
-                        <ListBooks books={books} shelf="" setUpdate={setUpdate} allShelfs={objShelfs} />
+                        <ListBooks books={books} shelf="none" setUpdate={setUpdate} allShelfs={objShelfs} />
                     </div>
                 </div>
 

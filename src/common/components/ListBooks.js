@@ -20,7 +20,7 @@ class ListBooks extends Component {
 
         let booksInShelfs = {}
 
-        if (shelf === "") {
+        if (shelf === "none") {
 
             booksInShelfs = window.localStorage.getItem('booksInShelfs') || '{}';
 
@@ -62,11 +62,12 @@ class ListBooks extends Component {
 
                 currentShelf = shelf
 
-                if (shelf === "") {
+
+                if (shelf === "none") {
 
                     let bookShelf = booksInShelfs.filter(sb => sb.id === book.id)
 
-                    if (bookShelf.length > 0) {
+                    if (bookShelf.length > 0) {                       
 
                         currentShelf = bookShelf[0].shelf
 

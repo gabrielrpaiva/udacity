@@ -22,6 +22,7 @@ class BooksApp extends React.Component {
   }
 
 
+
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
@@ -40,6 +41,8 @@ class BooksApp extends React.Component {
 
       let newBookList = {}
 
+      let refreshBooks = 0;
+
       if (allbooks.filter(b => b.id === book.id).length === 0) {
 
         let searchedBooks = window.localStorage.getItem('searchedBooks') || '{}';
@@ -50,6 +53,8 @@ class BooksApp extends React.Component {
 
         allbooks = allbooks.concat(currentBook)
 
+        refreshBooks = 1;
+
       }
 
       newBookList = allbooks.map(obj => {
@@ -57,7 +62,7 @@ class BooksApp extends React.Component {
         const newObj = Object.assign({}, obj);
 
         if (newObj.id === book.id) {
-          
+
           newObj.shelf = bookShelf;
 
         }
@@ -65,12 +70,10 @@ class BooksApp extends React.Component {
         return newObj;
 
       });
- 
+      window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
       // console.log(newBookList);
       this.setState({ books: newBookList })
-
-      window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
-
+ 
     })
 
   }
