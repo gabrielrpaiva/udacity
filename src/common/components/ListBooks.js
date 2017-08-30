@@ -12,7 +12,7 @@ class ListBooks extends Component {
 
 
     render() {
-        const { books, shelf, setUpdate, allShelfs, setLoad } = this.props
+        const { books, shelf, setUpdate, allShelfs, bookIdUpdate } = this.props
 
         let showingBooks = {}
 
@@ -75,11 +75,11 @@ class ListBooks extends Component {
                     }
                 }
 
-                let bookChange = window.localStorage.getItem('bookChange') || '';
+                //let bookChange = window.localStorage.getItem('bookChange') || '';
 
-                if (bookChange !== "") {
+                if (bookIdUpdate !== "") {
                
-                    if (bookChange ===  book.id) {
+                    if (bookIdUpdate ===  book.id) {
                       console.log("akakakka")
                         classToLoad = "book-shelf-on-changer"
                         window.localStorage.setItem('bookChange', "")

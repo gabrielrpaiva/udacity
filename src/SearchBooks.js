@@ -31,7 +31,7 @@ class SearchBooks extends React.Component {
     
         const { books, query } = this.state
 
-        const { setUpdate, objShelfs } = this.props
+        const { setUpdate, objShelfs, bookIdUpdate } = this.props
        
         if (typeof (books) !== "undefined" && books.length > 0) {
             books.sort(sortBy('title'))
@@ -67,7 +67,10 @@ class SearchBooks extends React.Component {
                         </div>
                     </div>
                     <div className="search-books-results">
-                        <ListBooks books={books} shelf="none" setUpdate={setUpdate} allShelfs={objShelfs} />
+                        <ListBooks books={books} shelf="none" 
+                        setUpdate={setUpdate} 
+                        allShelfs={objShelfs} 
+                        bookIdUpdate={bookIdUpdate}/>
                     </div>
                 </div>
 
