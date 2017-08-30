@@ -4,44 +4,52 @@ import './App.css'
 import SearchBooks from './SearchBooks'
 import ShelfsBooks from './Shelfs'
 import ListBooks from './common/components/ListBooks'
+import TodoList from './TesteLoad'
 import * as BooksAPI from './util/BooksAPI'
 
 class BooksApp extends React.Component {
 
 
-
-  state = {
-    books: [],
-    allShelfs: {
-      moveto: "Move to..",
-      currentlyReading: "Currently Reading",
-      wantToRead: "Want To Read",
-      read: "Read",
-      none: "None"
-    }
+//Create the states of the component
+state = {
+  // State of the books in the shelfs
+  books: [],
+  // State of all the allowed shelfs
+  allShelfs: {
+    moveto: "Move to..",
+    currentlyReading: "Currently Reading",
+    wantToRead: "Want To Read",
+    read: "Read",
+    none: "None"
   }
+}
 
 
 
-  componentDidMount() {
+componentDidMount() {
+  
+      // Call the api to retrun all books of the shelfs
+      BooksAPI.getAll().then((books) => {
+  
+        // Set the books of the shelfs in the state
+        this.setState({ books })
+  
+        // Set the books of the shelfs in the localStorage 
+        // (for control the current shelf on the search page)
+        window.localStorage.setItem('booksInShelfs', JSON.stringify(books));
+  
+      })
+  
+    }  
 
-    BooksAPI.getAll().then((books) => {
-
-      this.setState({ books })
-
-      window.localStorage.setItem('booksInShelfs', JSON.stringify(books));
-
-    })
-
-  }
-
-  updateShelf = (allbooks, book, bookShelf) => {
-
+  updateShelf = (allbooks, book, bookShelf, event) => {
+    console.log("antes de colocar true");
+    window.localStorage.setItem('bookChange', book.id);
+    this.setState({ loadShelf: true })
+   console.log("apos de colocar true");
     BooksAPI.update(book, bookShelf).then(() => {
 
       let newBookList = {}
-
-      let refreshBooks = 0;
 
       if (allbooks.filter(b => b.id === book.id).length === 0) {
 
@@ -52,8 +60,6 @@ class BooksApp extends React.Component {
         let currentBook = searchedBooks.filter(b => b.id == book.id)
 
         allbooks = allbooks.concat(currentBook)
-
-        refreshBooks = 1;
 
       }
 
@@ -71,9 +77,10 @@ class BooksApp extends React.Component {
 
       });
       window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
-      // console.log(newBookList);
+       console.log("antes de voltar");
+     // this.setState({ loadShelf: false })
       this.setState({ books: newBookList })
- 
+
     })
 
   }
@@ -85,7 +92,11 @@ class BooksApp extends React.Component {
       <div>
 
         <Route exact path='/' render={() => (
-          <ShelfsBooks books={this.state.books} setUpdate={this.updateShelf} objShelfs={this.state.allShelfs} />
+           
+          <ShelfsBooks books={this.state.books}
+            setUpdate={this.updateShelf}
+            objShelfs={this.state.allShelfs}
+               />
         )} />
 
         <Route exact path='/search' render={({ history }) => (

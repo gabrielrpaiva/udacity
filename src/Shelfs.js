@@ -5,7 +5,7 @@ import ListBooks from './common/components/ListBooks'
 
 class Shelfs extends React.Component {
     render() {
-        const { books, setUpdate, objShelfs } = this.props
+        const { books, setUpdate, objShelfs, setLoad } = this.props
 
         let showingShelfs = Object.keys(objShelfs)
             .filter(shelf => shelf !== "none" && shelf !== "moveto")
@@ -21,7 +21,10 @@ class Shelfs extends React.Component {
                         <h2 className="bookshelf-title">{objShelfs[key]}</h2>
                         <div className="bookshelf-books">
                             <ListBooks books={books} shelf={key}
-                                title={objShelfs[key]} setUpdate={setUpdate} allShelfs={objShelfs} />
+                                title={objShelfs[key]} 
+                                setUpdate={setUpdate} 
+                                allShelfs={objShelfs}
+                                setLoad={setLoad} />
                         </div>
                     </div>
                 </div>
