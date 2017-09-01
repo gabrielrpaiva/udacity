@@ -3,7 +3,14 @@ import { Link } from 'react-router-dom'
 import ListBooks from './common/components/ListBooks'
 
 
+
 class Shelfs extends React.Component {
+
+
+    
+ 
+
+
     render() {
         const { books, setUpdate, objShelfs, bookIdUpdate } = this.props
 
@@ -14,7 +21,7 @@ class Shelfs extends React.Component {
                 return obj;
             }, {});
 
-          
+
 
         let shelfOptions = Object.keys(showingShelfs).map(function (key) {
             return <div key={key} className="list-books-content">
@@ -31,7 +38,7 @@ class Shelfs extends React.Component {
                     </div>
                 </div>
             </div>
-        }); 
+        });
 
         return (
 

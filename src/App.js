@@ -43,7 +43,7 @@ class BooksApp extends React.Component {
 
   }
 
-  updateShelf = (allbooks, book, bookShelf, event) => {
+  updateShelf = (book, bookShelf) => {
 
     // Set the bookId of the book in the state 
     // (for chnage the the class of the 'book-shelf-changer' to book-shelf-on-changer)
@@ -54,9 +54,11 @@ class BooksApp extends React.Component {
 
       // Crate a an empity list
       let newBookList = {}
+      let books = window.localStorage.getItem('booksInShelfs') || '{}';
+      books = JSON.parse(books)
 
       // Verify if the updated book, is in the current list of books of the shelf
-      if (allbooks.filter(b => b.id === book.id).length === 0) {
+      if (books.filter(b => b.id === book.id).length === 0) {
 
         // Get all the books searcheds that was set in the localStorage
         let searchedBooks = window.localStorage.getItem('searchedBooks') || '{}';
@@ -68,12 +70,12 @@ class BooksApp extends React.Component {
         let currentBook = searchedBooks.filter(b => b.id == book.id)
 
         // Concatenate the updated book to the current list of books of the shelf
-        allbooks = allbooks.concat(currentBook)
+        books = books.concat(currentBook)
 
       }
 
       //Go through the list of books of the shelf, and update the updated book to the new shelf 
-      newBookList = allbooks.map(obj => {
+      newBookList = books.map(obj => {
 
         const newObj = Object.assign({}, obj);
 
@@ -91,19 +93,20 @@ class BooksApp extends React.Component {
       // (for control the current shelf on the search page)  
       window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
 
-      // Clean the state of the id updated book 
-      // (for chnage the the class of the 'book-shelf-on-changer' to book-shelf-changer)
-      this.setState({ bookIdUpdate: "" })
-       
-      // Set the list of books of the shelf in the state
-      this.setState({ books: newBookList })
 
+      this.setState({
+        // Clean the state of the id updated book 
+        // (for chnage the the class of the 'book-shelf-on-changer' to book-shelf-changer)
+        bookIdUpdate: "",
+        // Set the new list of books of the shelf in the state 
+        books: newBookList
+      })
     })
 
   }
 
   render() {
-
+    
     return (
 
       <div>
@@ -117,7 +120,7 @@ class BooksApp extends React.Component {
         )} />
 
         <Route exact path='/search' render={({ history }) => (
-          <SearchBooks setUpdate={this.updateShelf} objShelfs={this.state.allShelfs}  bookIdUpdate={this.state.bookIdUpdate}/>
+          <SearchBooks setUpdate={this.updateShelf} objShelfs={this.state.allShelfs} bookIdUpdate={this.state.bookIdUpdate} />
         )} />
 
       </div>
