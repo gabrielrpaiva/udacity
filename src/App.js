@@ -66,12 +66,27 @@ class BooksApp extends React.Component {
 
       // Verify if the updated book, is in the current list of books of the shelf
       if (books.filter(b => b.id === book.id).length === 0) {
-        
+
         // Get all the books searcheds that was set in the localStorage
         let searchedBooks = window.localStorage.getItem('searchedBooks') || '{}';
 
         // Make the parse json of the books searcheds
         searchedBooks = JSON.parse(searchedBooks)
+
+        if (this.state.relatedBooks.length > 0) {
+
+          let newRelatedBookList = this.state.relatedBooks.filter(rb => rb.id !== book.id)
+
+          if (newRelatedBookList.length < this.state.relatedBooks.length) {
+
+            this.setState({ relatedBooks: newRelatedBookList });
+
+          }
+
+
+        }
+
+
 
         // Find the updated book on the list
         let currentBook = searchedBooks.filter(b => b.id == book.id)
@@ -80,14 +95,14 @@ class BooksApp extends React.Component {
         books = books.concat(currentBook)
 
       }
-     
+
       //Go through the list of books of the shelf, and update the updated book to the new shelf 
       newBookList = books.map(obj => {
-       
+
         const newObj = Object.assign({}, obj);
 
         if (newObj.id === book.id) {
-     
+
           newObj.shelf = bookShelf;
 
         }
@@ -95,8 +110,8 @@ class BooksApp extends React.Component {
         return newObj;
 
       });
- 
-     
+
+
       // Set the list of books of the shelf in the localStorage
       // (for control the current shelf on the search page)  
       window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
@@ -200,7 +215,7 @@ class BooksApp extends React.Component {
             }
 
 
-            console.log("vamove dentro de tudo")
+
 
           }
         })
@@ -211,27 +226,25 @@ class BooksApp extends React.Component {
       }
     })
 
-    console.log("vamove")
-
-    try {
-      Promise.all(allPromisses.then(() => {
-        let ctrlRelatedBooks = window.localStorage.getItem('ctrlRelatedBooks');
-        console.log("vamove dentro")
-        if (typeof (ctrlRelatedBooks) !== "undefined" && ctrlRelatedBooks.length > 0) {
-
-          ctrlRelatedBooks = JSON.parse(ctrlRelatedBooks)
-        } else {
-          ctrlRelatedBooks = []
-
-        }
 
 
-        window.localStorage.setItem('searchedBooks', JSON.stringify(ctrlRelatedBooks));
-        this.setState({ classPopUp: " show", relatedBooks: ctrlRelatedBooks, relatedBookId: '' });
-      }))
-    } catch (e) {
-      console.log('error', e);
-    }
+
+    Promise.all(allPromisses.then(() => {
+      let ctrlRelatedBooks = window.localStorage.getItem('ctrlRelatedBooks');
+
+      if (typeof (ctrlRelatedBooks) !== "undefined" && ctrlRelatedBooks.length > 0) {
+
+        ctrlRelatedBooks = JSON.parse(ctrlRelatedBooks)
+      } else {
+        ctrlRelatedBooks = []
+
+      }
+
+
+      window.localStorage.setItem('searchedBooks', JSON.stringify(ctrlRelatedBooks));
+      this.setState({ classPopUp: " show", relatedBooks: ctrlRelatedBooks, relatedBookId: '' });
+    }))
+
 
 
 
@@ -265,7 +278,14 @@ class BooksApp extends React.Component {
         )} />
 
         <Route exact path='/search' render={({ history }) => (
-          <SearchBooks setUpdate={this.updateShelf} objShelfs={this.state.allShelfs} bookIdUpdate={this.state.bookIdUpdate} />
+          <SearchBooks setUpdate={this.updateShelf}
+            objShelfs={allShelfs}
+            bookIdUpdate={bookIdUpdate}
+            filterRelatedBooks={this.filterRelatedBooks}
+            classPopUp={classPopUp}
+            relatedBooks={relatedBooks}
+            closePopUp={this.closePopUp}
+            relatedBookId={relatedBookId} />
         )} />
 
       </div>

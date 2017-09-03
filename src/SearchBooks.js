@@ -38,9 +38,10 @@ class SearchBooks extends React.Component {
     render() {
 
         const { books, query, shelfFilter } = this.state
-       
 
-        const { setUpdate, objShelfs, bookIdUpdate } = this.props
+
+        const { setUpdate, objShelfs, bookIdUpdate, filterRelatedBooks,
+            classPopUp, relatedBooks, closePopUp, relatedBookId } = this.props
         let shelfBooks
         if (typeof (books) !== "undefined" && books.length > 0) {
 
@@ -106,7 +107,12 @@ class SearchBooks extends React.Component {
                             shelf={shelfFilter}
                             setUpdate={setUpdate}
                             allShelfs={objShelfs}
-                            bookIdUpdate={bookIdUpdate} />
+                            bookIdUpdate={bookIdUpdate}
+                            filterRelatedBooks={filterRelatedBooks}
+                            classPopUp={classPopUp}
+                            relatedBooks={relatedBooks}
+                            closePopUp={closePopUp}
+                            relatedBookId={relatedBookId} />
                     </div>
                 </div>
 
