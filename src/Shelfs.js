@@ -7,12 +7,13 @@ import ListBooks from './common/components/ListBooks'
 class Shelfs extends React.Component {
 
 
-    
- 
+
+
 
 
     render() {
-        const { books, setUpdate, objShelfs, bookIdUpdate } = this.props
+        const { books, setUpdate, objShelfs, bookIdUpdate, filterRelatedBooks,
+                classPopUp, relatedBooks, closePopUp, relatedBookId } = this.props
 
         let showingShelfs = Object.keys(objShelfs)
             .filter(shelf => shelf !== "none" && shelf !== "moveto")
@@ -26,6 +27,7 @@ class Shelfs extends React.Component {
         let shelfOptions = Object.keys(showingShelfs).map(function (key) {
             return <div key={key} className="list-books-content">
                 <div>
+                
                     <div className="bookshelf">
                         <h2 className="bookshelf-title">{objShelfs[key]}</h2>
                         <div className="bookshelf-books">
@@ -33,7 +35,12 @@ class Shelfs extends React.Component {
                                 title={objShelfs[key]}
                                 setUpdate={setUpdate}
                                 allShelfs={objShelfs}
-                                bookIdUpdate={bookIdUpdate} />
+                                bookIdUpdate={bookIdUpdate}
+                                filterRelatedBooks={filterRelatedBooks}
+                                classPopUp={classPopUp}
+                                relatedBooks={relatedBooks}
+                                closePopUp={closePopUp}
+                                relatedBookId={relatedBookId} />
                         </div>
                     </div>
                 </div>

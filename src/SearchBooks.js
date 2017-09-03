@@ -90,7 +90,7 @@ class SearchBooks extends React.Component {
 
                         </div>
                         <div className="book-shelf-filter">
-                            Filter by:
+                            <span onClick={(event) => this.filterList("read")}>Filter by:</span>
                             <select value={shelfFilter} onChange={(event) => this.filterList(event.target.value)} >
                                 <option value="allShelfs">All Shelfs</option>
                                 <option value="currentlyReading">Currently Reading</option>

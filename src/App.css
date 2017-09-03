@@ -205,6 +205,23 @@ body, .app {
   animation: spin 2s linear infinite;
 }
 
+.book-shelf-read-loader {
+  position: absolute; 
+  left: 0;
+  bottom: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #065ECC;
+  background-image: url('./icons/arrow-drop-down.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -235,11 +252,12 @@ body, .app {
   background-image: url('./icons/arrow-drop-down.svg');
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
   background-size: 20px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
- 
+
 
  
 
@@ -253,11 +271,19 @@ body, .app {
   transition: opacity 500ms;
   visibility: hidden;
   opacity: 0;
+  z-index: 9
 }
-.overlay:target {
+/* .overlay:target {
   visibility: visible;
   opacity: 1;
+} */
+
+.show {   
+  visibility: visible;
+  opacity: 1;
+  z-index: 9
 }
+
 
 .popup {
   margin: 70px auto;
@@ -265,7 +291,7 @@ body, .app {
   background: #fff;
   border-radius: 5px;
   width: 60%;
-  height: 60%;
+  height: 65%;
   position: relative;
   transition: all 5s ease-in-out;
 }
@@ -284,6 +310,7 @@ body, .app {
   font-weight: bold;
   text-decoration: none;
   color: #333;
+  cursor: pointer;
 }
 .popup .close:hover {
   color: #06D85F;
