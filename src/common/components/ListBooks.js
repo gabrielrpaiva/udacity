@@ -82,15 +82,20 @@ class ListBooks extends Component {
                 let classToLoad = "book-shelf-changer"
 
                 let classToLoadRelatedBook = "book-shelf-read"
-               // console.log("vai ver bookIdUpdate: "+ bookIdUpdate)
+
                 if (bookIdUpdate === book.id) { classToLoad = "book-shelf-on-changer" }
-               // console.log("vai ver: "+ relatedBookId)
+
                 if (relatedBookId === book.id) {
-                 
+
                     classToLoadRelatedBook = "book-shelf-read-loader"
 
                 }
 
+                if (typeof (book.shelf) === "undefined") {
+
+                    book.shelf = "none"
+
+                }
 
 
                 return <li key={book.id}>
@@ -99,7 +104,7 @@ class ListBooks extends Component {
                         <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.thumbnail}")` }}></div>
                             <If test={book.shelf === 'read'}>
-                                <div onClick={(event) => filterRelatedBooks(book.title, book.id)}>
+                                <div onClick={(event) => filterRelatedBooks(book)}>
 
                                     <a className={classToLoadRelatedBook}></a>
 

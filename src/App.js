@@ -74,26 +74,23 @@ class BooksApp extends React.Component {
         searchedBooks = JSON.parse(searchedBooks)
 
         if (this.state.relatedBooks.length > 0) {
-
+ 
           let newRelatedBookList = this.state.relatedBooks.filter(rb => rb.id !== book.id)
 
           if (newRelatedBookList.length < this.state.relatedBooks.length) {
-
+            
             this.setState({ relatedBooks: newRelatedBookList });
 
           }
 
-
         }
-
-
 
         // Find the updated book on the list
         let currentBook = searchedBooks.filter(b => b.id == book.id)
-
+ 
         // Concatenate the updated book to the current list of books of the shelf
         books = books.concat(currentBook)
-
+       
       }
 
       //Go through the list of books of the shelf, and update the updated book to the new shelf 
@@ -116,7 +113,6 @@ class BooksApp extends React.Component {
       // (for control the current shelf on the search page)  
       window.localStorage.setItem('booksInShelfs', JSON.stringify(newBookList));
 
-
       this.setState({
         // Clean the state of the id updated book 
         // (for chnage the the class of the 'book-shelf-on-changer' to book-shelf-changer)
@@ -127,7 +123,7 @@ class BooksApp extends React.Component {
     })
 
   }
- 
+
 
   /* Function to change the classPopUp State  */
   closePopUp = () => {
@@ -138,18 +134,21 @@ class BooksApp extends React.Component {
   }
 
   /* Searche for the related books */
-  filterRelatedBooks = (bookTitle, bookId) => {
+  filterRelatedBooks = (bookToRelated) => {
+
+    /* Set the state of the id related book, so then teh class of button can change */
+    this.setState({ relatedBookId: bookToRelated.id });
 
     /* Clean the ctrlRelatedBooks local storage */
     window.localStorage.setItem('ctrlRelatedBooks', [])
 
     /* Split every word of the book title  */
-    let arrayTitle = bookTitle.split(' ')
+    let arrayTitle = bookToRelated.title.split(' ')
 
     /* Create a let for store all the promisses */
     let allPromisses = []
 
-    /* Create a let for store the cuurent book  on the search */
+    /* Create a let for store the curent book  on the search */
     let currentBook = []
 
     /* Get from local storege the current lis of books in the shelfs */
@@ -161,103 +160,53 @@ class BooksApp extends React.Component {
 
       /* Verify if the word have at least 3 letters */
       if (desc.length > 3) {
-        console.log("index: " + index)
+
         /* Set the Promisse of search related book on the let  allPromisses*/
-        allPromisses.push(new Promise(function(done, fail){
-          BooksAPI.search(desc, 20).then(booksReturn => {
-            console.log("desc: " + desc)
-            /* Verify if the search has some result */
-            if (typeof (booksReturn) === "undefined" || booksReturn.length > 0) {
-              console.log("achou: " + desc)
-              /* Clean the current book list */
-              currentBook = []
-  
-              /* Go through all the result list */
-              booksReturn.map((b) => {
-  
-                /* Verify if the currentBook has less then 3 books */
-                if (currentBook.length < 3) {
-  
-                  /* Verify if the searched book is alredy in a shelf */
-                  let bookShelf = booksInShelfs.filter(bs => bs.id === b.id)
-  
-                  /* If is not in a shelf, set in the new list */
-                  if (bookShelf.length === 0) {
-  
-                    /* Set relatedBookId for make the relationship */
-                    b.relatedBookId = bookId
-  
-                    /* Add on the current list book */
-                    currentBook.push(b)
-                  }
-  
-                }
-              })
-  
-              console.log("achou: " + currentBook.length)
-  
-              /* Get the lis of related book on the  local sotage */
-              let ctrlRelatedBooks = window.localStorage.getItem('ctrlRelatedBooks');
-  
-              /* Verify if there any bokks in related book list */
-              if (typeof (ctrlRelatedBooks) !== "undefined" && ctrlRelatedBooks.length > 0) {
-                console.log("aki um: ")
-                ctrlRelatedBooks = JSON.parse(ctrlRelatedBooks)
-  
-                /* Set new book in the list of the related book */
-                ctrlRelatedBooks.push(currentBook)
-  
-                /* Add related books in the local storage */
-                window.localStorage.setItem('ctrlRelatedBooks', JSON.stringify(ctrlRelatedBooks));
-  
-              } else {
-                console.log("aki dois: ")
-                /* Add the new book in the related books in the local storage */
-                window.localStorage.setItem('ctrlRelatedBooks', JSON.stringify(currentBook));
-  
-              }
-  
-  
-  
-  
-            }
-          })
-
-        }))
-
-
-
+        allPromisses.push(BooksAPI.search(desc, 20));
 
       }
     })
 
-    console.log("no final: ")
-    Promise.all(allPromisses).then(function(){
-      let ctrlRelatedBooks = window.localStorage.getItem('ctrlRelatedBooks');
-      console.log("verificas: ")
-      if (typeof (ctrlRelatedBooks) !== "undefined" && ctrlRelatedBooks.length > 0) {
-        console.log("verificas acha: ")
-        ctrlRelatedBooks = JSON.parse(ctrlRelatedBooks)
-      } else {
-        console.log("verificas else: ")
-        ctrlRelatedBooks = []
-
-      }
+   
 
 
-      window.localStorage.setItem('searchedBooks', JSON.stringify(ctrlRelatedBooks));
-      this.setState({ classPopUp: " show", relatedBooks: ctrlRelatedBooks, relatedBookId: '' });
-  });
+    Promise.all(allPromisses).then(booksReturn => {
+
+      currentBook = []
+   
+      booksReturn.map((bk) => {
+
+        if (typeof (bk) !== "undefined" && bk.length > 0) {
+
+          bk.map((b) => {
+         
+            /* Verify if the currentBook has less then 3 books */
+            if (currentBook.length < 3) {
+
+              /* Verify if the searched book is alredy in a shelf */
+              let bookShelf = booksInShelfs.filter(bs => bs.id === b.id)
+
+              /* If is not in a shelf, set in the new list */
+              if (bookShelf.length === 0) {
+
+                /* Set relatedBookId for make the relationship */
+                b.relatedBookId = bookToRelated.id
+
+                /* Add on the current list book */
+                currentBook.push(b)
+              }
+
+            }
+
+          })
+        }
+
+      })
+
+      window.localStorage.setItem('searchedBooks', JSON.stringify(currentBook));
+      this.setState({ classPopUp: " show", relatedBooks: currentBook, relatedBookId: '' });
  
-
-
-
-
-
-    console.log("no gim")
-
-
-    this.setState({ relatedBookId: bookId });
+    })
 
   }
 
