@@ -156,7 +156,7 @@ class BooksApp extends React.Component {
     booksInShelfs = JSON.parse(booksInShelfs)
 
     /* Go through all the words of the book title */
-    arrayTitle.map((desc, index) => {
+    arrayTitle.map((desc) => {
 
       /* Verify if the word have at least 3 letters */
       if (desc.length > 3) {
@@ -189,11 +189,9 @@ class BooksApp extends React.Component {
               /* If is not in a shelf, set in the new list */
               if (bookShelf.length === 0) {
 
-                /* Set relatedBookId for make the relationship */
-                b.relatedBookId = bookToRelated.id
-
                 /* Add on the current list book */
                 currentBook.push(b)
+
               }
 
             }
