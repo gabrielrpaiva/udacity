@@ -74,11 +74,11 @@ class BooksApp extends React.Component {
         searchedBooks = JSON.parse(searchedBooks)
 
         if (this.state.relatedBooks.length > 0) {
- 
+
           let newRelatedBookList = this.state.relatedBooks.filter(rb => rb.id !== book.id)
 
           if (newRelatedBookList.length < this.state.relatedBooks.length) {
-            
+
             this.setState({ relatedBooks: newRelatedBookList });
 
           }
@@ -87,10 +87,10 @@ class BooksApp extends React.Component {
 
         // Find the updated book on the list
         let currentBook = searchedBooks.filter(b => b.id == book.id)
- 
+
         // Concatenate the updated book to the current list of books of the shelf
         books = books.concat(currentBook)
-       
+
       }
 
       //Go through the list of books of the shelf, and update the updated book to the new shelf 
@@ -167,19 +167,19 @@ class BooksApp extends React.Component {
       }
     })
 
-   
+
 
 
     Promise.all(allPromisses).then(booksReturn => {
 
       currentBook = []
-   
+
       booksReturn.map((bk) => {
 
         if (typeof (bk) !== "undefined" && bk.length > 0) {
 
           bk.map((b) => {
-         
+
             /* Verify if the currentBook has less then 3 books */
             if (currentBook.length < 3) {
 
@@ -203,7 +203,7 @@ class BooksApp extends React.Component {
 
       window.localStorage.setItem('searchedBooks', JSON.stringify(currentBook));
       this.setState({ classPopUp: " show", relatedBooks: currentBook, relatedBookId: '' });
- 
+
     })
 
   }

@@ -90,8 +90,12 @@ class SearchBooks extends React.Component {
                                 onChange={(event) => this.searckBook(event.target.value)} />
 
                         </div>
-                        <div className="book-shelf-filter">
-                            <span onClick={(event) => this.filterList("read")}>Filter by:</span>
+                    
+                    </div>
+
+                    <div className="search-books-results">
+                    <div className="book-shelf-filter">
+                            <span className="span-filter-search">Filter by: </span>
                             <select value={shelfFilter} onChange={(event) => this.filterList(event.target.value)} >
                                 <option value="allShelfs">All Shelfs</option>
                                 <option value="currentlyReading">Currently Reading</option>
@@ -100,9 +104,6 @@ class SearchBooks extends React.Component {
                                 <option value="none">None</option>
                             </select>
                         </div>
-                    </div>
-
-                    <div className="search-books-results">
                         <ListBooks books={shelfBooks}
                             shelf={shelfFilter}
                             setUpdate={setUpdate}

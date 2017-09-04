@@ -145,6 +145,11 @@ body, .app {
   color: #999;
 }
 
+.span-filter-search {
+  font-weight: 500;
+  margin-right: 8px;
+}
+
 .book-top { 
   position: relative;
   height: 200px;

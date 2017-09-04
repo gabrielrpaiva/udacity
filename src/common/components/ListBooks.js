@@ -6,27 +6,7 @@ import * as BooksAPI from '../../util/BooksAPI'
 
 class ListBooks extends Component {
 
-
-    state = {
-        booksRelated: []
-    }
-
-
-
-
-
-    closePopUp = (objSend) => {
-
-        console.log("akaiakakaaia: " + objSend)
-
-    }
-
-
-
-
-    render() {
-
-        const { booksRelated } = this.state
+    render() { 
 
         const { books, shelf, setUpdate, allShelfs, bookIdUpdate,
             filterRelatedBooks, classPopUp, relatedBooks, closePopUp, relatedBookId } = this.props
@@ -85,17 +65,9 @@ class ListBooks extends Component {
 
                 if (bookIdUpdate === book.id) { classToLoad = "book-shelf-on-changer" }
 
-                if (relatedBookId === book.id) {
+                if (relatedBookId === book.id) { classToLoadRelatedBook = "book-shelf-read-loader" }
 
-                    classToLoadRelatedBook = "book-shelf-read-loader"
-
-                }
-
-                if (typeof (book.shelf) === "undefined") {
-
-                    book.shelf = "none"
-
-                }
+                if (typeof (book.shelf) === "undefined") { book.shelf = "none" }
 
 
                 return <li key={book.id}>
@@ -105,21 +77,17 @@ class ListBooks extends Component {
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.thumbnail}")` }}></div>
                             <If test={book.shelf === 'read'}>
                                 <div onClick={(event) => filterRelatedBooks(book)}>
-
-                                    <a className={classToLoadRelatedBook}></a>
-
+                                    <a title="Book Tips" className={classToLoadRelatedBook}></a>
                                 </div>
                             </If>
-
-                            <div className={classToLoad}>
+                            <div title="Choose Shelf" className={classToLoad}>
                                 <select value={book.shelf} onChange={(event) => setUpdate(book, event.target.value)}>
                                     {shelfOptions}
                                 </select>
                             </div>
                         </div>
                         <div className="book-title">{book.title}</div>
-                        <div className="book-authors">{book.authors}</div>
-                        <div className="book-authors">{book.shelf}</div>
+                        <div className="book-authors">{book.authors}</div> 
                         <If test={book.shelf === 'read'}>
                             <div id="popup1" className={`overlay${classPopUp}`}>
                                 <div className="popup">
@@ -130,18 +98,9 @@ class ListBooks extends Component {
                                         bookIdUpdate={bookIdUpdate} />
                                 </div>
                             </div>
-
-
                         </If>
-
-
-
                     </div>
                 </li>
-
-
-
-
             });
         }
 
@@ -151,7 +110,6 @@ class ListBooks extends Component {
             </ol>
         )
     }
-
 
 }
 
