@@ -1,15 +1,24 @@
 {
   "dependencies": {
+    "enzyme": "^2.9.1",
     "escape-string-regexp": "^1.0.5",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.6.1",
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
     "react-router-dom": "^4.2.2",
     "react-scripts": "0.9.5"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/index.js",
+      "!src/registerServiceWorker.js"
+    ]
   },
   "scripts": {
     "start": "react-scripts start",

@@ -3,8 +3,7 @@ import { Route, Link } from 'react-router-dom'
 import './App.css'
 import SearchBooks from './SearchBooks'
 import ShelfsBooks from './Shelfs'
-import ListBooks from './common/components/ListBooks'
-import TodoList from './TesteLoad'
+import ListBooks from './common/components/ListBooks' 
 import * as BooksAPI from './util/BooksAPI'
 
 class BooksApp extends React.Component {
